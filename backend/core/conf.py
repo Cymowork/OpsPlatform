@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from functools import lru_cache
+# @lru_cache是 Python 的一个装饰器，用于实现函数结果的缓存。让我详细解释一下
 from typing import Literal
-
+# typing 是 Python 的标准库，用于定义类型提示。 
 from pydantic import model_validator
+# model_validator 是 pydantic 库中的一个装饰器，用于在模型实例化之前对模型字段进行验证。
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+# pydantic_settings 是 pydantic 库的一个扩展，用于处理配置文件的加载和验证。
 from backend.core.path_conf import BasePath
-
+# path_conf 是自定义的模块，用于处理路径配置。  
 
 class Settings(BaseSettings):
     """Global Settings"""
-
+# SettingsConfigDict 是 pydantic_settings 库中的一个类，用于配置设置的加载方式。    
     model_config = SettingsConfigDict(env_file=f'{BasePath}/.env', env_file_encoding='utf-8', extra='ignore')
 
     # Env Config
@@ -19,15 +21,15 @@ class Settings(BaseSettings):
 
     # Env MySQL
     MYSQL_HOST: str
-    MYSQL_PORT: int
-    MYSQL_USER: str
-    MYSQL_PASSWORD: str
+    MYSQL_PORT: int 
+    MYSQL_USER: str 
+    MYSQL_PASSWORD: str 
 
     # Env Redis
-    REDIS_HOST: str
-    REDIS_PORT: int
-    REDIS_PASSWORD: str
-    REDIS_DATABASE: int
+    REDIS_HOST: str 
+    REDIS_PORT: int 
+    REDIS_PASSWORD: str 
+    REDIS_DATABASE: int 
 
     # Env Token
     TOKEN_SECRET_KEY: str  # 密钥 secrets.token_urlsafe(32)
@@ -36,6 +38,8 @@ class Settings(BaseSettings):
     OPERA_LOG_ENCRYPT_SECRET_KEY: str  # 密钥 os.urandom(32), 需使用 bytes.hex() 方法转换为 str
 
     # FastAPI
+    FASTAPI_HOST: str = '127.0.0.1'
+    FASTAPI_PORT: int = 8001    # 添加这行
     FASTAPI_API_V1_PATH: str = '/api/v1'
     FASTAPI_TITLE: str = 'FastAPI'
     FASTAPI_VERSION: str = '0.0.1'
@@ -55,7 +59,7 @@ class Settings(BaseSettings):
 
     # MySQL
     MYSQL_ECHO: bool = False
-    MYSQL_DATABASE: str = 'fba'
+    MYSQL_DATABASE: str = 'opsplatform'
     MYSQL_CHARSET: str = 'utf8mb4'
 
     # Redis
@@ -71,7 +75,7 @@ class Settings(BaseSettings):
         f'{FASTAPI_API_V1_PATH}/auth/login',
     ]
 
-    # JWT
+    # JWT用户认证的 Redis 缓存配置
     JWT_USER_REDIS_PREFIX: str = 'fba:user'
     JWT_USER_REDIS_EXPIRE_SECONDS: int = 60 * 60 * 24 * 7
 
@@ -122,7 +126,7 @@ class Settings(BaseSettings):
 
     # CORS
     CORS_ALLOWED_ORIGINS: list[str] = [
-        'http://127.0.0.1:8000',
+        'http://127.0.0.1:8001',
         'http://localhost:5173',  # 前端地址，末尾不要带 '/'
     ]
     CORS_EXPOSE_HEADERS: list[str] = [
